@@ -1,6 +1,6 @@
 # Rabit-Year-Assessment
 
-### ~ Web APIs Challenge: Code Quiz
+### ~ Web APIs Challenge: Code Quiz 📝
 
 ## Description
 
