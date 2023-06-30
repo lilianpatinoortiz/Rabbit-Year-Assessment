@@ -1,4 +1,4 @@
-# Rabit-Year-Assessment
+# Rabbit-Year-Assessment
 
 ### ~ Web APIs Challenge: Code Quiz 📝
 
