@@ -16,15 +16,15 @@
 
     <!-- Navbar -->
     <nav>
-      <a href="#high-scores">View high scores</a>
-      <p>Time remaining:</p>
+      <a id="view-hs" href="#high-scores">View high scores</a>
+      <p>Time remaining: <strong>0</strong></p>
     </nav>
 
     <!-- Body -->
     <main>
       <!-- Quiz section -->
-      <section id="quiz-section">
-        <div id="quiz-container">
+      <section class="flex-section" id="questions-container">
+        <div id="quiz-initial-section">
           <h2>Coding Quiz Challenge</h2>
           <h3>
             The sign of Rabbit is a symbol of longevity, peace, and prosperity
@@ -34,7 +34,18 @@
             Can we try your year's luck and see how many questions can you get
             right?
           </h3>
-          <button>I feel lucky</button>
+          <button class="startButton">I feel lucky</button>
+        </div>
+        <div id="quiz-questions-section" class="hidden">
+          <p>Question 1</p>
+        </div>
+      </section>
+      <!-- Scores section -->
+      <section id="scores-container" class="flex-section hidden">
+        <div id="high-scores-section">
+          <h2>SCORES</h2>
+          <button id="go-back">Go back</button>
+          <button id="clear-scores">Clear scores</button>
         </div>
       </section>
     </main>
@@ -46,5 +57,6 @@
         Patino Ortiz
       </h3>
     </footer>
+    <script src="./assets/js/script.js"></script>
   </body>
 </html>
