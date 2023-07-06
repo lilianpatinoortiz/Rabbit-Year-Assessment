@@ -67,18 +67,19 @@ function showHighScores() {
   hideScoresLink();
 }
 function getScores() {
-  var scores = localStorage.getItem("scores");
+  var scores = JSON.parse(localStorage.getItem("scores"));
   console.log(scores);
-  if (scores === null) {
-    scores = [];
+  if (scores !== null) {
+    scoresArray = scores;
   }
-  scoresArray = scores;
-  // TODO: render scores
+  // TODO: render scores in order of score
 }
 
 function saveScore() {
+  getScores();
   console.log(scoresArray);
   scoresArray.push(playersScore);
+  console.log(scoresArray);
   localStorage.setItem("scores", JSON.stringify(scoresArray));
   showHighScores();
 }
@@ -117,11 +118,6 @@ function setTime() {
     }
   }, 1000);
 }
-
-function init() {
-  getScores();
-}
-
 /* HIDE / SHOW SECTIONS*/
 function hideScoresLink() {
   viewHighScoresLink.classList.add("hidden");
@@ -130,4 +126,3 @@ function showScoresLink() {
   viewHighScoresLink.classList.remove("hidden");
 }
 // todo: create function for each
-init();
