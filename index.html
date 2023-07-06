@@ -17,7 +17,9 @@
     <!-- Navbar -->
     <nav>
       <a id="view-hs" href="#high-scores">View high scores</a>
-      <p>Time remaining: <strong>0</strong></p>
+      <p id="view-counter" class="hidden">
+        Time remaining: <strong id="counter">0</strong>
+      </p>
     </nav>
 
     <!-- Body -->
@@ -46,6 +48,15 @@
           <h2>SCORES</h2>
           <button id="go-back">Go back</button>
           <button id="clear-scores">Clear scores</button>
+        </div>
+      </section>
+      <!-- My Score section -->
+      <section id="my-score-container" class="flex-section hidden">
+        <div id="my-score-section">
+          <h2>Thanks for trying your luck...</h2>
+          <h3 id="score-results"></h3>
+          <textarea id="initials"> Your name</textarea>
+          <button id="submit-score">Submit</button>
         </div>
       </section>
     </main>
