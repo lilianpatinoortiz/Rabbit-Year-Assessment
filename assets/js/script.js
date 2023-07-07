@@ -6,6 +6,7 @@ var startButton = document.querySelector(".startButton");
 var viewHighScoresLink = document.querySelector("#view-hs");
 var viewCounter = document.querySelector("#view-counter");
 var goBackButton = document.querySelector("#go-back");
+var clearButton = document.querySelector("#clear-scores");
 var questionsContainer = document.querySelector("#questions-container");
 var scoresContainer = document.querySelector("#scores-container");
 var initialSection = document.querySelector("#quiz-initial-section");
@@ -63,6 +64,12 @@ viewHighScoresLink.addEventListener("click", function (event) {
   showHighScores();
 });
 
+clearButton.addEventListener("click", function (event) {
+  localStorage.clear();
+  scoresArray = [];
+  renderScores(scoresArray);
+});
+
 function displayScore() {
   resultsText.textContent = "Your score is:  " + playersScore.score;
 }
@@ -115,16 +122,16 @@ function getPlayer() {
 
 function setTime() {
   timerInterval = setInterval(function () {
+    secondsLeft--;
     console.log(secondsLeft);
     counter.textContent = secondsLeft;
-    secondsLeft--;
     if (secondsLeft === 0) {
-      alert("GAME OVER");
       clearInterval(timerInterval);
       showMyScore();
     }
   }, 1000);
 }
+
 /* HIDE / SHOW functions */
 function hideScoresLink() {
   viewHighScoresLink.classList.add("hidden");
