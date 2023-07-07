@@ -106,3 +106,7 @@ button:hover {
 .hidden {
   display: none;
 }
+
+#scores-in-order > div {
+  margin: 5px;
+}

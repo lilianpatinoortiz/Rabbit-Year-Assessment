@@ -16,6 +16,7 @@ var initialsInput = document.querySelector("#initials");
 var myScoreSection = document.querySelector("#my-score-container");
 var submitButton = document.querySelector("#submit-score");
 var resultsText = document.querySelector("#score-results");
+var resultsList = $("#scores-in-order");
 
 /* Variables */
 var secondsLeft = maxTime;
@@ -23,7 +24,7 @@ var playersScore = { score: 0, initials: "" };
 var scoresArray = [];
 
 /* Questions array */
-var questiions = [
+var questions = [
   {
     question: "hello",
     options: [1, 2, 3],
@@ -41,7 +42,6 @@ startButton.addEventListener("click", function (event) {
   questionsSection.classList.remove("hidden");
   viewCounter.classList.remove("hidden");
   secondsLeft = maxTime;
-  hideScoresLink();
   setTime();
 });
 
@@ -64,6 +64,7 @@ function showHighScores() {
   scoresContainer.classList.remove("hidden");
   questionsContainer.classList.add("hidden");
   viewCounter.classList.add("hidden");
+  getScores();
   hideScoresLink();
 }
 function getScores() {
@@ -72,14 +73,26 @@ function getScores() {
   if (scores !== null) {
     scoresArray = scores;
   }
-  // TODO: render scores in order of score
+  // TODO: sort scores array by scores
+  renderScores(scoresArray);
+}
+
+function renderScores(scoresArray) {
+  resultsList.children("div").empty();
+  for (var i = 0; i < scoresArray.length; i++) {
+    var divEle = $("<div>");
+    var pElement = $("<p>");
+    pElement.text(
+      i + 1 + ". " + scoresArray[i].initials + " - " + scoresArray[i].score
+    );
+    divEle.append(pElement);
+    resultsList.append(divEle);
+  }
 }
 
 function saveScore() {
   getScores();
-  console.log(scoresArray);
   scoresArray.push(playersScore);
-  console.log(scoresArray);
   localStorage.setItem("scores", JSON.stringify(scoresArray));
   showHighScores();
 }
@@ -100,6 +113,7 @@ function getPlayer() {
   var initials = initialsInput.value;
   if (initials) {
     playersScore.initials = initials;
+    playersScore.score = secondsLeft;
     saveScore();
   } else {
     alert("Invalid initials, please try again!");
