@@ -20,8 +20,10 @@ var resultsList = $("#scores-in-order");
 
 /* Variables */
 var secondsLeft = maxTime;
+counter.textContent = secondsLeft;
 var playersScore = { score: 0, initials: "" };
 var scoresArray = [];
+var timerInterval;
 
 /* Questions array */
 var questions = [
@@ -50,9 +52,13 @@ goBackButton.addEventListener("click", function (event) {
   questionsSection.classList.add("hidden");
   initialSection.classList.remove("hidden");
   showScoresLink();
+  hideHighScores();
 });
 
-/* SCORES functions */
+submitButton.addEventListener("click", function (event) {
+  getPlayer();
+});
+
 viewHighScoresLink.addEventListener("click", function (event) {
   showHighScores();
 });
@@ -60,16 +66,8 @@ viewHighScoresLink.addEventListener("click", function (event) {
 function displayScore() {
   resultsText.textContent = "Your score is:  " + playersScore.score;
 }
-function showHighScores() {
-  scoresContainer.classList.remove("hidden");
-  questionsContainer.classList.add("hidden");
-  viewCounter.classList.add("hidden");
-  getScores();
-  hideScoresLink();
-}
 function getScores() {
   var scores = JSON.parse(localStorage.getItem("scores"));
-  console.log(scores);
   if (scores !== null) {
     scoresArray = scores;
   }
@@ -83,7 +81,13 @@ function renderScores(scoresArray) {
     var divEle = $("<div>");
     var pElement = $("<p>");
     pElement.text(
-      i + 1 + ". " + scoresArray[i].initials + " - " + scoresArray[i].score
+      i +
+        1 +
+        ". " +
+        scoresArray[i].initials +
+        " ( Score: " +
+        scoresArray[i].score +
+        " )"
     );
     divEle.append(pElement);
     resultsList.append(divEle);
@@ -95,19 +99,8 @@ function saveScore() {
   scoresArray.push(playersScore);
   localStorage.setItem("scores", JSON.stringify(scoresArray));
   showHighScores();
+  hideMyScore();
 }
-function showMyScore() {
-  myScoreSection.classList.remove("hidden");
-  questionsContainer.classList.add("hidden");
-  viewCounter.classList.add("hidden");
-  scoresContainer.classList.add("hidden");
-  displayScore();
-}
-
-/* SAVE functions*/
-submitButton.addEventListener("click", function (event) {
-  getPlayer();
-});
 
 function getPlayer() {
   var initials = initialsInput.value;
@@ -120,11 +113,11 @@ function getPlayer() {
   }
 }
 
-/* TIME functions */
 function setTime() {
-  var timerInterval = setInterval(function () {
-    secondsLeft--;
+  timerInterval = setInterval(function () {
+    console.log(secondsLeft);
     counter.textContent = secondsLeft;
+    secondsLeft--;
     if (secondsLeft === 0) {
       alert("GAME OVER");
       clearInterval(timerInterval);
@@ -132,11 +125,34 @@ function setTime() {
     }
   }, 1000);
 }
-/* HIDE / SHOW SECTIONS*/
+/* HIDE / SHOW functions */
 function hideScoresLink() {
   viewHighScoresLink.classList.add("hidden");
 }
 function showScoresLink() {
   viewHighScoresLink.classList.remove("hidden");
 }
-// todo: create function for each
+function showMyScore() {
+  myScoreSection.classList.remove("hidden");
+  questionsContainer.classList.add("hidden");
+  viewCounter.classList.add("hidden");
+  scoresContainer.classList.add("hidden");
+  displayScore();
+}
+function hideMyScore() {
+  myScoreSection.classList.add("hidden");
+}
+function showHighScores() {
+  scoresContainer.classList.remove("hidden");
+  questionsContainer.classList.add("hidden");
+  viewCounter.classList.add("hidden");
+  getScores();
+  hideScoresLink();
+  // stop timer
+  window.clearInterval(timerInterval);
+  counter.textContent = maxTime;
+}
+function hideHighScores() {
+  scoresContainer.classList.add("hidden");
+  questionsContainer.classList.remove("hidden");
+}
