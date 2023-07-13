@@ -24,7 +24,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-bottom: 10px;
 }
 
@@ -68,6 +68,8 @@ main {
   flex-wrap: wrap;
   justify-content: space-around;
   min-height: 600px;
+  max-width: 600px;
+  margin: auto;
 
   #quiz-initial-container {
     max-width: 60%;
@@ -124,4 +126,13 @@ button:hover {
 #options > ul > li {
   font-size: 1.5em;
   cursor: pointer;
+  color: #afafaf;
+  padding: 10px;
+}
+
+#options > ul > li:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: #4d113b2b;
+  border-radius: 10px;
+  color: black;
 }

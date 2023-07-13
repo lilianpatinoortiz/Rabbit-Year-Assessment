@@ -36,36 +36,36 @@ var currentQuestion = 0;
 var questions = [
   {
     question: "Commonly used data types DO NOT include:",
-    options: ["alerts", "strings", "booleans", "numbers"],
-    answer: "alerts",
+    options: ["Alerts", "Strings", "Booleans", "Numbers"],
+    answer: "Alerts",
   },
   {
     question:
       "The condition in an if / else statement is enclosed within ____.",
-    options: ["parentheses", "quotes", "curly brackets", "square brackets"],
-    answer: "parentheses",
+    options: ["Parentheses", "Quotes", "Curly brackets", "Square brackets"],
+    answer: "Parentheses",
   },
   {
     question: "Arrays in Javascript can be used to store ____.",
     options: [
-      "numbers and strings",
-      "other arrays",
-      "booleans",
-      "all of the above",
+      "Numbers and strings",
+      "Other arrays",
+      "Booleans",
+      "All of the above",
     ],
-    answer: "all of the above",
+    answer: "All of the above",
   },
   {
     question:
       "String values must be enclosed within ____ when being assigned to variables.",
-    options: ["quotes", "commas", "curly brackets", "parenthesis"],
-    answer: "quotes",
+    options: ["Quotes", "Commas", "Curly brackets", "Parenthesis"],
+    answer: "Quotes",
   },
   {
     question:
       "A very useful tool for used during development and debugging for printing content to the debugger is:",
-    options: ["console log", "Javascript", "terminal / bash", "for loops"],
-    answer: "console log",
+    options: ["Console log", "Javascript", "Terminal / bash", "For loops"],
+    answer: "Console log",
   },
 ];
 
@@ -140,9 +140,9 @@ function displayQuestion(currentQuestion) {
 
 function checkAnswer(event) {
   if (event.target.textContent == questions[currentQuestion].answer) {
-    answerText.textContent = "CORRECT 😏";
+    answerText.textContent = "CORRECT ✅";
   } else {
-    answerText.textContent = "INCORRECT 😟";
+    answerText.textContent = "INCORRECT ❌";
     // substract 15 seconds from the clock
     if (secondsLeft > 15) {
       secondsLeft -= 15;
@@ -189,6 +189,7 @@ function saveScore() {
   getScores();
   scoresArray.push(playersScore);
   localStorage.setItem("scores", JSON.stringify(scoresArray));
+  initialsInput.value = "";
   showHighScores();
   hideMyScore();
 }
