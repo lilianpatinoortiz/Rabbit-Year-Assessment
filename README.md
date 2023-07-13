@@ -38,7 +38,9 @@ The game ends when you finish answering the questions or the time remaining is e
 
 Check the scores saved in your local storage by clicking the upper left link, clear them and enjoy playing around!
 
-![alt text](assets/images/screenshot.png)
+![Initial screen](assets/img/1.png)
+![Question screen](assets/img/2.png)
+![MyScore screen](assets/img/3.png)
 
 ## Credits
 
