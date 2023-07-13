@@ -1,5 +1,5 @@
 /* Constants */
-let maxTime = 20;
+let maxTime = 60;
 
 /* DOM elements */
 var startButton = document.querySelector(".startButton");
@@ -10,6 +10,7 @@ var clearButton = document.querySelector("#clear-scores");
 var questionsContainer = document.querySelector("#questions-container");
 var scoresContainer = document.querySelector("#scores-container");
 var initialSection = document.querySelector("#quiz-initial-section");
+var clearButton = document.querySelector("#clear-scores");
 var questionsSection = document.querySelector("#quiz-questions-section");
 var highScoresSection = document.querySelector("#high-scores-section");
 var counter = document.querySelector("#counter");
@@ -17,34 +18,64 @@ var initialsInput = document.querySelector("#initials");
 var myScoreSection = document.querySelector("#my-score-container");
 var submitButton = document.querySelector("#submit-score");
 var resultsText = document.querySelector("#score-results");
+var question = document.querySelector("#question");
+var options = document.querySelector("#options");
+var answerText = document.querySelector("#answer-status");
 var resultsList = $("#scores-in-order");
 
 /* Variables */
 var secondsLeft = maxTime;
+var mySeconds = maxTime;
 counter.textContent = secondsLeft;
 var playersScore = { score: 0, initials: "" };
 var scoresArray = [];
 var timerInterval;
+var currentQuestion = 0;
 
 /* Questions array */
 var questions = [
   {
-    question: "hello",
-    options: [1, 2, 3],
-    answer: 1,
+    question: "Commonly used data types DO NOT include:",
+    options: ["alerts", "strings", "booleans", "numbers"],
+    answer: "alerts",
   },
   {
-    question: "hello 2",
-    options: [1, 2, 3],
-    answer: 3,
+    question:
+      "The condition in an if / else statement is enclosed within ____.",
+    options: ["parentheses", "quotes", "curly brackets", "square brackets"],
+    answer: "parentheses",
+  },
+  {
+    question: "Arrays in Javascript can be used to store ____.",
+    options: [
+      "numbers and strings",
+      "other arrays",
+      "booleans",
+      "all of the above",
+    ],
+    answer: "all of the above",
+  },
+  {
+    question:
+      "String values must be enclosed within ____ when being assigned to variables.",
+    options: ["quotes", "commas", "curly brackets", "parenthesis"],
+    answer: "quotes",
+  },
+  {
+    question:
+      "A very useful tool for used during development and debugging for printing content to the debugger is:",
+    options: ["console log", "Javascript", "terminal / bash", "for loops"],
+    answer: "console log",
   },
 ];
 
+/* Event listeners */
 startButton.addEventListener("click", function (event) {
   initialSection.classList.add("hidden");
   questionsSection.classList.remove("hidden");
   viewCounter.classList.remove("hidden");
   secondsLeft = maxTime;
+  displayQuestion(currentQuestion);
   setTime();
 });
 
@@ -70,8 +101,13 @@ clearButton.addEventListener("click", function (event) {
   renderScores(scoresArray);
 });
 
+clearButton.addEventListener("click", function () {
+  localStorage.clear();
+  location.reload();
+});
+
 function displayScore() {
-  resultsText.textContent = "Your score is:  " + playersScore.score;
+  resultsText.textContent = "Your score time is:  " + mySeconds;
 }
 function getScores() {
   var scores = JSON.parse(localStorage.getItem("scores"));
@@ -80,6 +116,53 @@ function getScores() {
   }
   // TODO: sort scores array by scores
   renderScores(scoresArray);
+}
+function displayQuestion(currentQuestion) {
+  question.innerHTML = "";
+  options.innerHTML = "";
+  answerText.textContent = "";
+  var ulCreate = document.createElement("ul");
+  ulCreate.innerHTML = "";
+
+  var userQuestion = questions[currentQuestion].question;
+  var userChoices = questions[currentQuestion].options;
+  question.textContent = userQuestion;
+
+  userChoices.forEach(function (newItem) {
+    var listItem = document.createElement("li");
+    listItem.textContent = newItem;
+    options.appendChild(ulCreate);
+    ulCreate.appendChild(listItem);
+    listItem.addEventListener("click", checkAnswer);
+  });
+}
+
+function checkAnswer(event) {
+  if (event.target.textContent == questions[currentQuestion].answer) {
+    answerText.textContent = "CORRECT 😏";
+  } else {
+    answerText.textContent = "INCORRECT 😟";
+    // substract 15 seconds from the clock
+    if (secondsLeft > 15) {
+      secondsLeft -= 15;
+    } else {
+      showMyScore();
+    }
+  }
+  setTimeout(function () {
+    event.preventDefault();
+    console.log("Ready to move to the next question in 1.5 seconds...");
+    isGameFinished();
+  }, 1500);
+}
+
+function isGameFinished() {
+  currentQuestion += 1;
+  if (currentQuestion >= questions.length - 1) {
+    showMyScore();
+  } else {
+    displayQuestion(currentQuestion);
+  }
 }
 
 function renderScores(scoresArray) {
@@ -92,7 +175,7 @@ function renderScores(scoresArray) {
         1 +
         ". " +
         scoresArray[i].initials +
-        " ( Score: " +
+        " ( Score time: " +
         scoresArray[i].score +
         " )"
     );
@@ -113,7 +196,7 @@ function getPlayer() {
   var initials = initialsInput.value;
   if (initials) {
     playersScore.initials = initials;
-    playersScore.score = secondsLeft;
+    playersScore.score = mySeconds;
     saveScore();
   } else {
     alert("Invalid initials, please try again!");
@@ -140,6 +223,8 @@ function showScoresLink() {
   viewHighScoresLink.classList.remove("hidden");
 }
 function showMyScore() {
+  mySeconds = secondsLeft;
+  window.clearInterval(timerInterval); // stop timer
   myScoreSection.classList.remove("hidden");
   questionsContainer.classList.add("hidden");
   viewCounter.classList.add("hidden");
@@ -155,8 +240,7 @@ function showHighScores() {
   viewCounter.classList.add("hidden");
   getScores();
   hideScoresLink();
-  // stop timer
-  window.clearInterval(timerInterval);
+  window.clearInterval(timerInterval); // stop timer
   counter.textContent = maxTime;
 }
 function hideHighScores() {

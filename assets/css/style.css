@@ -111,3 +111,10 @@ button:hover {
   margin: 5px;
   font-size: 20px;
 }
+
+#question {
+}
+
+#options > ul {
+  cursor: pointer;
+}
