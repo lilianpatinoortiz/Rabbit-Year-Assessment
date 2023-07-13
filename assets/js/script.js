@@ -22,6 +22,7 @@ var question = document.querySelector("#question");
 var options = document.querySelector("#options");
 var answerText = document.querySelector("#answer-status");
 var resultsList = $("#scores-in-order");
+var optionsSection = document.querySelector("#options");
 
 /*************  Variables */
 var secondsLeft = maxTime;
@@ -157,12 +158,15 @@ function checkAnswer(event) {
       showMyScore();
     }
   }
-  // We give 1.5 second for the user to see the result of their choice selected before moving to the next question
+  optionsSection.classList.add("disabled");
+
+  // We give 1 second for the user to see the result of their choice selected before moving to the next question
   setTimeout(function () {
+    console.log("Ready to move to the next question in 1 second...");
     event.preventDefault();
-    console.log("Ready to move to the next question in 1.5 seconds...");
     isGameFinished();
-  }, 1500);
+    optionsSection.classList.remove("disabled");
+  }, 1000);
 }
 
 // Questions screen: we check if the game should be finished or not. If finished we display the score, if not we go to the next question.
@@ -199,7 +203,6 @@ function renderScores(scoresArray) {
 function saveScore() {
   getScores();
   scoresArray.push(playersScore);
-  console.log(scoresArray);
   // Sort the array so the scores are being displayed in order
   scoresArray.sort(function (a, b) {
     var keyA = a.score,
@@ -274,6 +277,7 @@ function showHighScores() {
   viewCounter.classList.add("hidden");
   getScores();
   hideScoresLink();
+  hideMyScore();
   window.clearInterval(timerInterval); // stop timer
   counter.textContent = maxTime;
 }
