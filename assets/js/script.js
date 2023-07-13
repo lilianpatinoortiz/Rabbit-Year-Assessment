@@ -1,7 +1,7 @@
-/* Constants */
+/*************  Constants */
 let maxTime = 60;
 
-/* DOM elements */
+/*************   DOM elements */
 var startButton = document.querySelector(".startButton");
 var viewHighScoresLink = document.querySelector("#view-hs");
 var viewCounter = document.querySelector("#view-counter");
@@ -23,16 +23,16 @@ var options = document.querySelector("#options");
 var answerText = document.querySelector("#answer-status");
 var resultsList = $("#scores-in-order");
 
-/* Variables */
+/*************  Variables */
 var secondsLeft = maxTime;
 var mySeconds = maxTime;
-counter.textContent = secondsLeft;
 var playersScore = { score: 0, initials: "" };
 var scoresArray = [];
 var timerInterval;
 var currentQuestion = 0;
+counter.textContent = secondsLeft;
 
-/* Questions array */
+/*************   Questions array */
 var questions = [
   {
     question: "Commonly used data types DO NOT include:",
@@ -68,7 +68,9 @@ var questions = [
   },
 ];
 
-/* Event listeners */
+/*************   Event listeners */
+
+// Initial screen: start button will hide the other sections and will start displaying the questions. This function also starts the timer.
 startButton.addEventListener("click", function (event) {
   initialSection.classList.add("hidden");
   questionsSection.classList.remove("hidden");
@@ -79,6 +81,7 @@ startButton.addEventListener("click", function (event) {
   setTime();
 });
 
+// High scores screen: the go back button - when high scores are shown - makes sure we go back to the inicial screen. We also show the scores link again.
 goBackButton.addEventListener("click", function (event) {
   questionsContainer.classList.remove("hidden");
   questionsSection.classList.add("hidden");
@@ -87,28 +90,35 @@ goBackButton.addEventListener("click", function (event) {
   hideHighScores();
 });
 
+// My score screen: the submit button is responsible of calling a function that will get the users data
 submitButton.addEventListener("click", function (event) {
   getPlayer();
 });
 
+// Initial screen: this function calls the function responsible of showing the high scores screen
 viewHighScoresLink.addEventListener("click", function (event) {
   showHighScores();
 });
 
+// High scores screen: clear button will clear the local storage data, and display the empty scores again
 clearButton.addEventListener("click", function (event) {
   localStorage.clear();
   scoresArray = [];
   renderScores(scoresArray);
 });
-
 clearButton.addEventListener("click", function () {
   localStorage.clear();
   location.reload();
 });
 
+/*************  FUNCTIONS */
+
+// My score screen: Display score in the screen
 function displayScore() {
   resultsText.textContent = "Your score time is:  " + mySeconds;
 }
+
+// Initial Screen: Get scores from the local storage and calls render function
 function getScores() {
   var scores = JSON.parse(localStorage.getItem("scores"));
   if (scores !== null) {
@@ -117,6 +127,8 @@ function getScores() {
   // TODO: sort scores array by scores
   renderScores(scoresArray);
 }
+
+// Questions screen: Display the current question and its options, in new created elements appended to the dom one by one
 function displayQuestion(currentQuestion) {
   question.innerHTML = "";
   options.innerHTML = "";
@@ -133,22 +145,24 @@ function displayQuestion(currentQuestion) {
     listItem.textContent = newItem;
     options.appendChild(ulCreate);
     ulCreate.appendChild(listItem);
+    // for each answer, add the event listener to see if it was clicked - if so - we check if the answer is correct
     listItem.addEventListener("click", checkAnswer);
   });
 }
 
+// Questions screen: Check if the selected answer is correct or not, and display it,
 function checkAnswer(event) {
   if (event.target.textContent == questions[currentQuestion].answer) {
     answerText.textContent = "CORRECT ✅";
   } else {
     answerText.textContent = "INCORRECT ❌";
-    // substract 15 seconds from the clock
     if (secondsLeft > 15) {
       secondsLeft -= 15;
     } else {
       showMyScore();
     }
   }
+  // We give 1.5 second for the user to see the result of their choice selected before moving to the next question
   setTimeout(function () {
     event.preventDefault();
     console.log("Ready to move to the next question in 1.5 seconds...");
@@ -156,6 +170,7 @@ function checkAnswer(event) {
   }, 1500);
 }
 
+// Questions screen: we check if the game should be finished or not. If finished we display the score, if not we go to the next question.
 function isGameFinished() {
   currentQuestion += 1;
   if (currentQuestion >= questions.length - 1) {
@@ -165,6 +180,7 @@ function isGameFinished() {
   }
 }
 
+// High scores screen: we render the top scores, creating an element for each and appending it to the div
 function renderScores(scoresArray) {
   resultsList.children("div").empty();
   for (var i = 0; i < scoresArray.length; i++) {
@@ -184,6 +200,7 @@ function renderScores(scoresArray) {
   }
 }
 
+// High scores screen: When the user has clicked on the submit button to save their data, we save the new scores array in the local storage
 function saveScore() {
   getScores();
   scoresArray.push(playersScore);
@@ -193,6 +210,7 @@ function saveScore() {
   hideMyScore();
 }
 
+// High scores screen: We get the users score and their input for the initials. If not provided we show an alert.
 function getPlayer() {
   var initials = initialsInput.value;
   if (initials) {
@@ -204,6 +222,7 @@ function getPlayer() {
   }
 }
 
+// Questions screen: Here we initialize the timer whenever the user started the quiz, every second we substract one so it can be displayed in the screen
 function setTime() {
   timerInterval = setInterval(function () {
     secondsLeft--;
@@ -215,13 +234,19 @@ function setTime() {
   }, 1000);
 }
 
-/* HIDE / SHOW functions */
+/************* HIDE / SHOW functions */
+
+// hide the high scores link
 function hideScoresLink() {
   viewHighScoresLink.classList.add("hidden");
 }
+
+// show the high scores link
 function showScoresLink() {
   viewHighScoresLink.classList.remove("hidden");
 }
+
+//show my score screen
 function showMyScore() {
   mySeconds = secondsLeft;
   window.clearInterval(timerInterval); // stop timer
@@ -231,9 +256,13 @@ function showMyScore() {
   scoresContainer.classList.add("hidden");
   displayScore();
 }
+
+// hide my score screen
 function hideMyScore() {
   myScoreSection.classList.add("hidden");
 }
+
+// show high scores screen
 function showHighScores() {
   scoresContainer.classList.remove("hidden");
   questionsContainer.classList.add("hidden");
@@ -243,6 +272,8 @@ function showHighScores() {
   window.clearInterval(timerInterval); // stop timer
   counter.textContent = maxTime;
 }
+
+// hide high scores screen
 function hideHighScores() {
   scoresContainer.classList.add("hidden");
   questionsContainer.classList.remove("hidden");
