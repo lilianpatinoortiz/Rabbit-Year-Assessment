@@ -40,7 +40,8 @@ Check the scores saved in your local storage by clicking the upper left link, cl
 
 ![Initial screen](assets/img/1.png)
 ![Question screen](assets/img/2.png)
-![MyScore screen](assets/img/3.png)
+![MyScore screen](assets/img/4.png)
+![High scores screen](assets/img/5.png)
 
 ## Credits
 
