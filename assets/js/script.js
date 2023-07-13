@@ -1,5 +1,5 @@
 /*************  Constants */
-let maxTime = 60;
+let maxTime = 75;
 
 /*************   DOM elements */
 var startButton = document.querySelector(".startButton");
@@ -120,7 +120,6 @@ function getScores() {
   if (scores !== null) {
     scoresArray = scores;
   }
-  // TODO: sort scores array by scores
   renderScores(scoresArray);
 }
 
@@ -187,9 +186,9 @@ function renderScores(scoresArray) {
         1 +
         ". " +
         scoresArray[i].initials +
-        " ( Score time: " +
+        " with score time: " +
         scoresArray[i].score +
-        " )"
+        " second(s)"
     );
     divEle.append(pElement);
     resultsList.append(divEle);
@@ -200,6 +199,16 @@ function renderScores(scoresArray) {
 function saveScore() {
   getScores();
   scoresArray.push(playersScore);
+  console.log(scoresArray);
+  // Sort the array so the scores are being displayed in order
+  scoresArray.sort(function (a, b) {
+    var keyA = a.score,
+      keyB = b.score;
+    // Compare the 2 scores
+    if (keyA < keyB) return 1;
+    if (keyA > keyB) return -1;
+    return 0;
+  });
   localStorage.setItem("scores", JSON.stringify(scoresArray));
   initialsInput.value = "";
   showHighScores();
