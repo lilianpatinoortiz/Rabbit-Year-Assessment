@@ -75,6 +75,7 @@ startButton.addEventListener("click", function (event) {
   questionsSection.classList.remove("hidden");
   viewCounter.classList.remove("hidden");
   secondsLeft = maxTime;
+  currentQuestion = 0;
   displayQuestion(currentQuestion);
   setTime();
 });
@@ -206,7 +207,6 @@ function getPlayer() {
 function setTime() {
   timerInterval = setInterval(function () {
     secondsLeft--;
-    console.log(secondsLeft);
     counter.textContent = secondsLeft;
     if (secondsLeft === 0) {
       clearInterval(timerInterval);
