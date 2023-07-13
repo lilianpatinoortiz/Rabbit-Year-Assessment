@@ -72,9 +72,7 @@ var questions = [
 
 // Initial screen: start button will hide the other sections and will start displaying the questions. This function also starts the timer.
 startButton.addEventListener("click", function (event) {
-  initialSection.classList.add("hidden");
-  questionsSection.classList.remove("hidden");
-  viewCounter.classList.remove("hidden");
+  showQuestionsSection();
   secondsLeft = maxTime;
   currentQuestion = 0;
   displayQuestion(currentQuestion);
@@ -83,9 +81,7 @@ startButton.addEventListener("click", function (event) {
 
 // High scores screen: the go back button - when high scores are shown - makes sure we go back to the inicial screen. We also show the scores link again.
 goBackButton.addEventListener("click", function (event) {
-  questionsContainer.classList.remove("hidden");
-  questionsSection.classList.add("hidden");
-  initialSection.classList.remove("hidden");
+  showInitialSection();
   showScoresLink();
   hideHighScores();
 });
@@ -277,4 +273,19 @@ function showHighScores() {
 function hideHighScores() {
   scoresContainer.classList.add("hidden");
   questionsContainer.classList.remove("hidden");
+}
+
+// show questions section
+function showQuestionsSection() {
+  initialSection.classList.add("hidden");
+  questionsSection.classList.remove("hidden");
+  viewCounter.classList.remove("hidden");
+  secondsLeft = maxTime;
+}
+
+// show initial section
+function showInitialSection() {
+  questionsContainer.classList.remove("hidden");
+  questionsSection.classList.add("hidden");
+  initialSection.classList.remove("hidden");
 }
